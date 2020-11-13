@@ -9,13 +9,27 @@ tmp/
 *.bak
 *.swp
 *~.nib
-local.properties
 .settings/
 .loadpath
 .recommenders
 
+local.properties
+.properties
+
+project.properties
+*.properties
+project.properties
+
+#Ignore META-INF 
+META-INF
+
 # External tool builders
 .externalToolBuilders/
+
+# Eclipse
+.classpath
+.project
+.settings/
 
 # Locally stored "Eclipse launch configurations"
 *.launch
