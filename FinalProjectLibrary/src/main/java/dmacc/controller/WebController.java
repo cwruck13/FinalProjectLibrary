@@ -37,5 +37,13 @@ public class WebController {
 			repo.save(c);
 			return viewAllBooks(model);
 		}
+
+	@GetMapping("/edit/{id}")
+		public String showUpdateBook(@PathVariable("id") long id, Model model) {
+			Book c = repo.findById(id).orElse(null);
+			System.out.println("BOOK TO EDIT: " + c.toString());
+			model.addAttribute("newBook", c);
+			return "input";
+	}
 	 
 }
