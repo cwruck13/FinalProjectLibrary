@@ -8,11 +8,10 @@
 <form> 
 <table> 
 <tr th:each="currentBook : ${books}" > 
-<td th:text="${currentBook.id}" />     
-<td th:text="${currentBook.make}" />     
-<td th:text="${currentBook.model}" />     
-<td th:text="${currentBook.year}" />     
-<td th:text="${currentBook.listPrice}" />   
+<td th:text="${currentBook.title}" />     
+<td th:text="${currentBook.author}" />     
+<td th:text="${currentBook.totalCopies}" />     
+<td th:text="${currentBook.availableCopies}" />     
 <td><a th:href= "@{/edit/{id}(id=${currentBook.id})}" >Edit</a></td> 
 <td><a th:href="@{/delete/{id}(id=${currentBook.id})}">Delete</a></td>  
 </tr> 

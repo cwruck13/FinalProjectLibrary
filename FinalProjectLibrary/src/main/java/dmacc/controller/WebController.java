@@ -46,5 +46,11 @@ public class WebController {
 			model.addAttribute("newBook", c);
 			return "input";
 	}
+	@GetMapping("/delete/{id}")
+	public String deleteUser(@PathVariable("id") long id, Model model) {
+	Book c = repo.findById(id).orElse(null);
+	repo.delete(c);
+	return viewAllBooks(model);
+	}
 	 
 }
