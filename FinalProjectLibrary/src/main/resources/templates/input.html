@@ -41,7 +41,7 @@ function validateForm() {
 }
 </script>
 
-<form name="myForm" th:object="${newBook}" th:action="@{/inputBook}" method=POST onSubmit="return(validateForm())"> 
+<form name="myForm" th:object="${newBook}" th:action="@{/update/{id}(id=${newBook.id})}" method=POST onSubmit="return(validateForm())"> 
  Title: <input name="title" size="80" th:field= "*{title}"><br />
  Author: <input name="author" size="25" th:field= "*{author}"><br />
  Total Copies: <input name="totalCopies" size="20" th:field= "*{totalCopies}"><br />
