@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import dmacc.beans.Book;
@@ -44,6 +45,12 @@ public class WebController {
 			System.out.println("BOOK TO EDIT: " + c.toString());
 			model.addAttribute("newBook", c);
 			return "input";
+	}
+	@GetMapping("/delete/{id}")
+	public String deleteUser(@PathVariable("id") long id, Model model) {
+	Book c = repo.findById(id).orElse(null);
+	repo.delete(c);
+	return viewAllBooks(model);
 	}
 	 
 }
