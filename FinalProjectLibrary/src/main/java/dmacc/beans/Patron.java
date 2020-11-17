@@ -17,4 +17,8 @@ public class Patron {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String name;
+	
+	public Patron(String name) {
+		this.name = name;
+	}
 }
