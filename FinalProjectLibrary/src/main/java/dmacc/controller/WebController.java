@@ -9,13 +9,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import dmacc.beans.Book;
+import dmacc.beans.Patron;
 import dmacc.repository.BookRepository;
+import dmacc.repository.PatronRepository;
 
 
 @Controller
 public class WebController {
 	@Autowired
 	BookRepository repo;
+	PatronRepository repo1;
 	
 	@GetMapping("/viewAll")
 		public String viewAllBooks(Model model) {
@@ -56,6 +59,34 @@ public class WebController {
 			Book c = repo.findById(id).orElse(null);
 			repo.delete(c);
 			return viewAllBooks(model);
+	}
+	
+	@GetMapping("/viewAllPatrons")
+	public String viewAllPatrons(Model model) {
+		if(repo1.findAll().isEmpty()) {    
+			return addNewPatron(model);   
+		}   
+		model.addAttribute("patrons", repo1.findAll());
+		return "patronResults";
+	}
+	
+	@GetMapping("/inputPatron")
+	public String addNewPatron(Model model) {
+		Patron p = new Patron();
+		model.addAttribute("newPatron", p);
+		return "patron";
+	}
+	
+	@PostMapping("/inputPatron")		
+	public String addNewPatron(@ModelAttribute Patron p, Model model) {
+		repo1.save(p);
+		return viewAllPatrons(model);
+	}
+	
+	@PostMapping("/updatePatron/{id}")
+	public String revisePatron(Patron p, Model model) {
+		repo1.save(p);
+		return viewAllPatrons(model);
 	}
 	 
 }

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"> 
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert New Patron</title>
+</head>
+<body>
+<script>
+function validateForm() {
+    if(document.myForm.title.name == "") {
+      alert("Name can not be left blank");
+      document.myForm.name.focus();
+      return false;
+    }
+    return true;
+}
+</script>
+
+<form name="myForm" th:object="${newPatron}" th:action="@{/updatePatron/{id}(id=${newPatron.id})}" method=POST onSubmit="return(validateForm())"> 
+ Patron name: <input name="name" size="80" th:field= "*{name}"><br />
+ <input name= "patronsubmit" type= "submit" value= "submit" /> 
+ </form>
+<a href= "viewAllPatrons" >View all Patrons</a><br />
+</body>
+</html>
