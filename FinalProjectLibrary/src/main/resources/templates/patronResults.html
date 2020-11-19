@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+<head>
+<meta charset="ISO-8859-1">
+<title>View All Patrons</title>
+</head>
+<body> 
+<form> 
+<table> 
+<tr th:each="currentPatron : ${patrons}" > 
+<td th:text="${currentPatron.name}" />       
+<td><a th:href= "@{/editPatron/{id}(id=${currentPatron.id})}" >Edit</a></td> 
+<td><a th:href="@{/deletePatron/{id}(id=${currentPatron.id})}">Delete</a></td>  
+</tr> 
+</table> 
+</form> 
+<a href= "../inputPatron" >Add a new patron</a> 
+</body>
+</html>
