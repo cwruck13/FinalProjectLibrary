@@ -18,8 +18,10 @@ function validateForm() {
 
 <form name="myForm" th:object="${newPatron}" th:action="@{/updatePatron/{id}(id=${newPatron.id})}" method=POST onSubmit="return(validateForm())"> 
  Patron name: <input name="name" size="80" th:field= "*{name}"><br />
- <input name= "patronsubmit" type= "submit" value= "submit" /> 
+ <input name= "submit" type= "submit" value= "submit" /> 
  </form>
 <a href= "viewAllPatrons" >View all Patrons</a><br />
+<a href="inputBook">Add a new book</a><br />
+<a href= "viewAll" >View all Books</a>
 </body>
 </html>
