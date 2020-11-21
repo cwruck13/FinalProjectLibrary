@@ -18,7 +18,8 @@ import dmacc.repository.PatronRepository;
 public class WebController {
 	@Autowired
 	BookRepository repo;
-	PatronRepository repo1;
+	@Autowired
+	PatronRepository repop;
 	
 	@GetMapping("/viewAll")
 		public String viewAllBooks(Model model) {
@@ -63,10 +64,10 @@ public class WebController {
 	
 	@GetMapping("/viewAllPatrons")
 	public String viewAllPatrons(Model model) {
-		if(repo1.findAll().isEmpty()) {    
+		if(repop.findAll().isEmpty()) {    
 			return addNewPatron(model);   
 		}   
-		model.addAttribute("patrons", repo1.findAll());
+		model.addAttribute("patrons", repop.findAll());
 		return "patronResults";
 	}
 	
@@ -79,13 +80,13 @@ public class WebController {
 	
 	@PostMapping("/inputPatron")		
 	public String addNewPatron(@ModelAttribute Patron p, Model model) {
-		repo1.save(p);
+		repop.save(p);
 		return viewAllPatrons(model);
 	}
 	
 	@PostMapping("/updatePatron/{id}")
 	public String revisePatron(Patron p, Model model) {
-		repo1.save(p);
+		repop.save(p);
 		return viewAllPatrons(model);
 	}
 	 

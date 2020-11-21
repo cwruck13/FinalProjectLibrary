@@ -23,5 +23,7 @@ public class BeanConfiguration {
 		bean.setName("Jenny McCarthy");
 		return bean;
 	}
+	
+	
 
 }
