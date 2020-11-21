@@ -1,8 +1,11 @@
 package dmacc.controller;
 
+import java.time.LocalDate;
+
 import org.springframework.context.annotation.Bean;
 
 import dmacc.beans.Book;
+import dmacc.beans.Checkout;
 import dmacc.beans.Patron;
 
 public class BeanConfiguration {
@@ -24,6 +27,12 @@ public class BeanConfiguration {
 		return bean;
 	}
 	
-	
-
+	@Bean
+	public Checkout checkout() {
+		Checkout bean = new Checkout();
+		bean.setCheckoutDate(LocalDate.now());
+		bean.setDueDate(bean.getCheckoutDate().plusDays(14));  // add 14 days to checkout date to get due date
+		bean.setCheckinDate(null);
+		return bean;
+	}
 }
