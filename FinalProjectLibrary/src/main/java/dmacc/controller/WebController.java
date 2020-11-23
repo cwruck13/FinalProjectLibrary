@@ -89,5 +89,13 @@ public class WebController {
 		repop.save(p);
 		return viewAllPatrons(model);
 	}
+	
+	@GetMapping("/deletePatron/{id}")
+	public String deletePatron(@PathVariable("id") long id, Model model) {
+		Patron p = repo.findById(id).orElse(null);
+		repo1.delete(p);
+		return viewAllPatrons(model);
+}
+
 	 
 }
