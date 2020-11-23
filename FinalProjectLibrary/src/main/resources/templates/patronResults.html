@@ -11,6 +11,7 @@
 <td th:text="${currentPatron.name}" />       
 <td><a th:href= "@{/editPatron/{id}(id=${currentPatron.id})}" >Edit</a></td> 
 <td><a th:href="@{/deletePatron/{id}(id=${currentPatron.id})}">Delete</a></td>  
+<td><a th:href="@{/checkout/{id}(id=${currentPatron.id})}">Checkout</a></td>  
 </tr> 
 </table> 
 </form> 

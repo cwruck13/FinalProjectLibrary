@@ -17,8 +17,10 @@ import dmacc.repository.PatronRepository;
 public class WebController {
 	@Autowired
 	BookRepository repo;
-	PatronRepository repo1;
-
+  
+	@Autowired
+	PatronRepository repop;
+	
 	@GetMapping("/viewAll")
 	public String viewAllBooks(Model model) {
 		if (repo.findAll().isEmpty()) {
@@ -64,10 +66,11 @@ public class WebController {
 
 	@GetMapping("/viewAllPatrons")
 	public String viewAllPatrons(Model model) {
-		if (repo1.findAll().isEmpty()) {
-			return addNewPatron(model);
-		}
-		model.addAttribute("patrons", repo1.findAll());
+
+		if(repop.findAll().isEmpty()) {    
+			return addNewPatron(model);   
+		}   
+		model.addAttribute("patrons", repop.findAll());
 		return "patronResults";
 	}
 
@@ -80,24 +83,32 @@ public class WebController {
 
 	@PostMapping("/inputPatron")
 	public String addNewPatron(@ModelAttribute Patron p, Model model) {
-		repo1.save(p);
+		repop.save(p);
 		return viewAllPatrons(model);
+	}
+	
+	@GetMapping("/editPatron/{id}")
+	public String showUpdatePatron(@PathVariable("id") long id, Model model) {
+		Patron p = repop.findById(id).orElse(null);
+		System.out.println("PATRON TO EDIT: " + p.toString());
+		model.addAttribute("newPatron", p);
+		return "patron";
 	}
 
 	@PostMapping("/updatePatron/{id}")
 	public String revisePatron(Patron p, Model model) {
-		repo1.save(p);
+		repop.save(p);
 		return viewAllPatrons(model);
 	}
 
 	@GetMapping("/deletePatron/{id}")
 	public String deletePatron(@PathVariable("id") long id, Model model) {
-		Patron p = repo1.findById(id).orElse(null);
-		//might change to make a method to check if patron is empty.
+		Patron p = repop.findById(id).orElse(null);
+    	//might change to make a method to check if patron is empty.
 		//if (p.isEmpty()) {
 			//return ViewAllPatron(model);
 		//}
-		repo1.delete(p);
+		repop.delete(p);
 		return viewAllPatrons(model);
 	}
 
