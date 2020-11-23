@@ -84,6 +84,14 @@ public class WebController {
 		return viewAllPatrons(model);
 	}
 	
+	@GetMapping("/editPatron/{id}")
+	public String showUpdatePatron(@PathVariable("id") long id, Model model) {
+		Patron p = repop.findById(id).orElse(null);
+		System.out.println("PATRON TO EDIT: " + p.toString());
+		model.addAttribute("newPatron", p);
+		return "patron";
+	}
+
 	@PostMapping("/updatePatron/{id}")
 	public String revisePatron(Patron p, Model model) {
 		repop.save(p);
@@ -92,8 +100,8 @@ public class WebController {
 	
 	@GetMapping("/deletePatron/{id}")
 	public String deletePatron(@PathVariable("id") long id, Model model) {
-		Patron p = repo.findById(id).orElse(null);
-		repo1.delete(p);
+		Patron p = repop.findById(id).orElse(null);
+		repop.delete(p);
 		return viewAllPatrons(model);
 }
 
