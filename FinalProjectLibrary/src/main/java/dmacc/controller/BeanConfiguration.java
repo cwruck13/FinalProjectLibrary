@@ -32,7 +32,6 @@ public class BeanConfiguration {
 		Checkout bean = new Checkout();
 		bean.setCheckoutDate(LocalDate.now());
 		bean.setDueDate(bean.getCheckoutDate().plusDays(14));  // add 14 days to checkout date to get due date
-		bean.setCheckinDate(null);
 		return bean;
 	}
 }
