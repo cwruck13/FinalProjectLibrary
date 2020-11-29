@@ -19,14 +19,14 @@ import dmacc.repository.PatronRepository;
 public class WebController {
 	@Autowired
 	BookRepository repo;
-  
+
 	@Autowired
 	PatronRepository repop;
-	
+
 	@Autowired
 	CheckoutRepository repoc;
-	
-	@GetMapping("/viewAll")
+
+	@GetMapping("/viewAll") // viewing list of all books
 	public String viewAllBooks(Model model) {
 		if (repo.findAll().isEmpty()) {
 			return addNewBook(model);
@@ -35,20 +35,20 @@ public class WebController {
 		return "results";
 	}
 
-	@GetMapping("/inputBook")
+	@GetMapping("/inputBook") // adding books
 	public String addNewBook(Model model) {
 		Book c = new Book();
 		model.addAttribute("newBook", c);
 		return "input";
 	}
 
-	@PostMapping("/inputBook")
+	@PostMapping("/inputBook") // landing adding book
 	public String addNewBook(@ModelAttribute Book c, Model model) {
 		repo.save(c);
 		return viewAllBooks(model);
 	}
 
-	@GetMapping("/edit/{id}")
+	@GetMapping("/edit/{id}") // editing a book
 	public String showUpdateBook(@PathVariable("id") long id, Model model) {
 		Book c = repo.findById(id).orElse(null);
 		System.out.println("BOOK TO EDIT: " + c.toString());
@@ -56,15 +56,15 @@ public class WebController {
 		return "input";
 	}
 
-	@PostMapping("/update/{id}")
+	@PostMapping("/update/{id}") // landing page to update book
 	public String reviseBook(Book c, Model model) {
 		repo.save(c);
 		return viewAllBooks(model);
 	}
 
-	@GetMapping("/delete/{id}")
-	public String deleteUser(@PathVariable("id") long id, Model model) {	
-		if(!repoc.findAll().isEmpty()) {   	
+	@GetMapping("/delete/{id}") // deleting book
+	public String deleteUser(@PathVariable("id") long id, Model model) {
+		if (!repoc.findAll().isEmpty()) {
 			Checkout c = repoc.findById(id).orElse(null);
 			repoc.delete(c);
 		}
@@ -73,30 +73,30 @@ public class WebController {
 		return viewAllBooks(model);
 	}
 
-	@GetMapping("/viewAllPatrons")
+	@GetMapping("/viewAllPatrons") // viewing all patrons checking out book
 	public String viewAllPatrons(Model model) {
 
-		if(repop.findAll().isEmpty()) {    
-			return addNewPatron(model);   
-		}   
+		if (repop.findAll().isEmpty()) {
+			return addNewPatron(model);
+		}
 		model.addAttribute("patrons", repop.findAll());
 		return "patronResults";
 	}
 
-	@GetMapping("/inputPatron")
+	@GetMapping("/inputPatron") // adding a person
 	public String addNewPatron(Model model) {
 		Patron p = new Patron();
 		model.addAttribute("newPatron", p);
 		return "patron";
 	}
 
-	@PostMapping("/inputPatron")
+	@PostMapping("/inputPatron") // landing page from adding person
 	public String addNewPatron(@ModelAttribute Patron p, Model model) {
 		repop.save(p);
 		return viewAllPatrons(model);
 	}
-	
-	@GetMapping("/editPatron/{id}")
+
+	@GetMapping("/editPatron/{id}") // editing a patron
 	public String showUpdatePatron(@PathVariable("id") long id, Model model) {
 		Patron p = repop.findById(id).orElse(null);
 		System.out.println("PATRON TO EDIT: " + p.toString());
@@ -104,19 +104,20 @@ public class WebController {
 		return "patron";
 	}
 
-	@PostMapping("/updatePatron/{id}")
+	@PostMapping("/updatePatron/{id}") // landing adding patron
 	public String revisePatron(Patron p, Model model) {
 		repop.save(p);
 		return viewAllPatrons(model);
 	}
 
-	@GetMapping("/deletePatron/{id}")
+	@GetMapping("/deletePatron/{id}") // deleting patron
 	public String deletePatron(@PathVariable("id") long id, Model model) {
+		// method to check if patron is empty.
+		if (!repoc.findAll().isEmpty()) {
+			Checkout c = repoc.findById(id).orElse(null);
+			repoc.delete(c);
+		}
 		Patron p = repop.findById(id).orElse(null);
-    	//might change to make a method to check if patron is empty.
-		//if (p.isEmpty()) {
-			//return ViewAllPatron(model);
-		//}
 		repop.delete(p);
 		return viewAllPatrons(model);
 	}
