@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+<head>
+<meta charset="ISO-8859-1">
+<title>Checked Out Books</title>
+</head>
+<body> 
+<form> 
+<table> 
+<tr th:each="currentCheckout : ${checkouts}" >
+<td>Title: <td>
+<td th:text="${currentCheckout.book.title}" />
+<td>  Author: <td>
+<td th:text="${currentCheckout.book.author}" />
+<td>      Checked Out By: <td>     
+<td th:text="${currentCheckout.patron.name}" />
+<td>   <td>
+<td><a th:href= "@{/checkinBook/{id}(id=${currentCheckout.id})}" >Checkin</a></td>  
+</tr> 
+</table> 
+</form> 
+<a href= "../viewAllPatrons" >View All Patrons</a> 
+</body>
+</html>

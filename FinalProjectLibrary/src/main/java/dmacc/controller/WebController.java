@@ -1,5 +1,9 @@
 package dmacc.controller;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +30,15 @@ public class WebController {
 	@Autowired
 	CheckoutRepository repoc;
 
+	// staticP is a static variable that references a Patron object.
+	// The purpose of this is to be able to persist a Patron object
+	// during the checkout process when navigating from the 
+	// patronResults.html page to the checkout method to the
+	// checkout.html page and then finally to the 
+	// addCheckout method that creates and persists the
+	// checkout object.
+	static Patron staticP = new Patron();
+	
 	@GetMapping("/viewAll") // viewing list of all books
 	public String viewAllBooks(Model model) {
 		if (repo.findAll().isEmpty()) {
@@ -122,4 +135,88 @@ public class WebController {
 		return viewAllPatrons(model);
 	}
 
+	@GetMapping("/checkout/{id}")
+	public String addNewCheckouts(@PathVariable("id") long id, Model model) {
+		
+		staticP = repop.findById(id).orElse(null);
+		
+		model.addAttribute("patron", staticP);
+		
+		List<Book> allBooks = new ArrayList<Book>();
+		
+		List<Book> availableBooks = new ArrayList<Book>();
+		
+		allBooks = repo.findAll();
+		
+		for (Book b : allBooks) {
+			if (b.getAvailableCopies() > 0) {
+				availableBooks.add(b);
+				}
+			}
+		
+		model.addAttribute("availableBooks", availableBooks);
+		
+		return "checkout";
+	}
+	
+	@GetMapping("/addCheckout/{id}")
+	
+	public String addCheckout(@PathVariable("id") long id,  Model model) {
+		
+		Book b = repo.findById(id).orElse(null);
+		
+		Checkout c = new Checkout();
+		
+		// Get today's date
+		LocalDate today = LocalDate.now();
+		
+		// Book is due in two weeks
+		LocalDate dueDate = today.plusDays(14);
+		
+		c.setBook(b);
+		c.setPatron(staticP);
+		c.setCheckoutDate(today);
+		c.setDueDate(dueDate);
+		
+		// Verify book is available.
+		// If not available then don't
+		// persist the checkout object.
+		// Otherwise, decrement the number
+		// of available copies and persist
+		if (b.getAvailableCopies() < 1) {
+			return viewAllPatrons(model);
+		} else {
+			b.setAvailableCopies(b.getAvailableCopies() - 1);
+			repo.save(b);
+			}
+		
+		repoc.save(c);
+		
+		return viewAllPatrons(model);
+		}
+	
+	@GetMapping("/viewCheckouts") // viewing all patrons checking out book
+	public String viewCheckouts(Model model) {
+
+		if (repoc.findAll().isEmpty()) {
+			viewAllPatrons(model);
+		}
+		model.addAttribute("checkouts", repoc.findAll());
+		return "checkoutResults";
+	}
+
+	@GetMapping("/checkinBook/{id}") // checking in book
+	public String checkinBook(@PathVariable("id") long id, Model model) {
+		
+		Checkout c = repoc.findById(id).orElse(null);
+		
+		if (c != null) {
+			Book b = c.getBook();
+			b.setAvailableCopies(b.getAvailableCopies() + 1);
+			repo.save(b);
+			repoc.delete(c);
+		}
+		
+		return viewCheckouts(model);
+	}
 }
