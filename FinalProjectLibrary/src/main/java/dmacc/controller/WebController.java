@@ -1,8 +1,8 @@
 package dmacc.controller;
 
-import java.util.List;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,16 +19,17 @@ import dmacc.repository.BookRepository;
 import dmacc.repository.CheckoutRepository;
 import dmacc.repository.PatronRepository;
 
-
 @Controller
 public class WebController {
 	@Autowired
 	BookRepository repo;
+
 	@Autowired
 	PatronRepository repop;
+
 	@Autowired
 	CheckoutRepository repoc;
-	
+
 	// staticP is a static variable that references a Patron object.
 	// The purpose of this is to be able to persist a Patron object
 	// during the checkout process when navigating from the 
@@ -38,82 +39,102 @@ public class WebController {
 	// checkout object.
 	static Patron staticP = new Patron();
 	
-	@GetMapping("/viewAll")
-		public String viewAllBooks(Model model) {
-			if(repo.findAll().isEmpty()) {    
-				return addNewBook(model);   
-			}   
-			model.addAttribute("books", repo.findAll());
-			return "results";
+	@GetMapping("/viewAll") // viewing list of all books
+	public String viewAllBooks(Model model) {
+		if (repo.findAll().isEmpty()) {
+			return addNewBook(model);
 		}
-	
-	@GetMapping("/inputBook")
-		public String addNewBook(Model model) {
-			Book c = new Book();
-			model.addAttribute("newBook", c);
-			return "input";
-			}
-	
-	@PostMapping("/inputBook")
-		public String addNewBook(@ModelAttribute Book c, Model model) {
-			repo.save(c);
-			return viewAllBooks(model);
-		}
+		model.addAttribute("books", repo.findAll());
+		return "results";
+	}
 
-	@GetMapping("/edit/{id}")
-		public String showUpdateBook(@PathVariable("id") long id, Model model) {
-			Book c = repo.findById(id).orElse(null);
-			System.out.println("BOOK TO EDIT: " + c.toString());
-			model.addAttribute("newBook", c);
-			return "input";
+	@GetMapping("/inputBook") // adding books
+	public String addNewBook(Model model) {
+		Book c = new Book();
+		model.addAttribute("newBook", c);
+		return "input";
 	}
-	@PostMapping("/update/{id}")
+
+	@PostMapping("/inputBook") // landing adding book
+	public String addNewBook(@ModelAttribute Book c, Model model) {
+		repo.save(c);
+		return viewAllBooks(model);
+	}
+
+	@GetMapping("/edit/{id}") // editing a book
+	public String showUpdateBook(@PathVariable("id") long id, Model model) {
+		Book c = repo.findById(id).orElse(null);
+		System.out.println("BOOK TO EDIT: " + c.toString());
+		model.addAttribute("newBook", c);
+		return "input";
+	}
+
+	@PostMapping("/update/{id}") // landing page to update book
 	public String reviseBook(Book c, Model model) {
-	repo.save(c);
-	return viewAllBooks(model);
+		repo.save(c);
+		return viewAllBooks(model);
 	}
-	@GetMapping("/delete/{id}")
-		public String deleteUser(@PathVariable("id") long id, Model model) {
-			Book c = repo.findById(id).orElse(null);
-			repo.delete(c);
-			return viewAllBooks(model);
+
+	@GetMapping("/delete/{id}") // deleting book
+	public String deleteUser(@PathVariable("id") long id, Model model) {
+		if (!repoc.findAll().isEmpty()) {
+			Checkout c = repoc.findById(id).orElse(null);
+			repoc.delete(c);
+		}
+		Book b = repo.findById(id).orElse(null);
+		repo.delete(b);
+		return viewAllBooks(model);
 	}
-	
-	@GetMapping("/viewAllPatrons")
+
+	@GetMapping("/viewAllPatrons") // viewing all patrons checking out book
 	public String viewAllPatrons(Model model) {
-		if(repop.findAll().isEmpty()) {    
-			return addNewPatron(model);   
-		}   
+
+		if (repop.findAll().isEmpty()) {
+			return addNewPatron(model);
+		}
 		model.addAttribute("patrons", repop.findAll());
 		return "patronResults";
 	}
-	
-	@GetMapping("/inputPatron")
+
+	@GetMapping("/inputPatron") // adding a person
 	public String addNewPatron(Model model) {
 		Patron p = new Patron();
 		model.addAttribute("newPatron", p);
 		return "patron";
 	}
-	
-	@PostMapping("/inputPatron")		
+
+	@PostMapping("/inputPatron") // landing page from adding person
 	public String addNewPatron(@ModelAttribute Patron p, Model model) {
 		repop.save(p);
 		return viewAllPatrons(model);
 	}
-	
-	@GetMapping("/editPatron/{id}")
-	public String revisePatron(@PathVariable("id") long id,Model model) {
+
+	@GetMapping("/editPatron/{id}") // editing a patron
+	public String showUpdatePatron(@PathVariable("id") long id, Model model) {
 		Patron p = repop.findById(id).orElse(null);
+		System.out.println("PATRON TO EDIT: " + p.toString());
 		model.addAttribute("newPatron", p);
 		return "patron";
-		
 	}
-	@PostMapping("/updatePatron/{id}")
+
+	@PostMapping("/updatePatron/{id}") // landing adding patron
 	public String revisePatron(Patron p, Model model) {
 		repop.save(p);
 		return viewAllPatrons(model);
 	}
-	 
+
+	@GetMapping("/deletePatron/{id}") // deleting patron
+	public String deletePatron(@PathVariable("id") long id, Model model) {
+		// method to check if patron is empty.
+		if (!repoc.findAll().isEmpty()) {
+			Checkout c = repoc.findById(id).orElse(null);
+			repoc.delete(c);
+		}
+		Patron p = repop.findById(id).orElse(null);
+		repop.delete(p);
+		return viewAllPatrons(model);
+	}
+
 	@GetMapping("/checkout/{id}")
 	public String addNewCheckouts(@PathVariable("id") long id, Model model) {
 		
@@ -130,17 +151,18 @@ public class WebController {
 		for (Book b : allBooks) {
 			if (b.getAvailableCopies() > 0) {
 				availableBooks.add(b);
+				}
 			}
-		}
 		
-    	model.addAttribute("availableBooks", availableBooks);
+		model.addAttribute("availableBooks", availableBooks);
 		
 		return "checkout";
 	}
 	
 	@GetMapping("/addCheckout/{id}")
+	
 	public String addCheckout(@PathVariable("id") long id,  Model model) {
-			
+		
 		Book b = repo.findById(id).orElse(null);
 		
 		Checkout c = new Checkout();
@@ -166,10 +188,10 @@ public class WebController {
 		} else {
 			b.setAvailableCopies(b.getAvailableCopies() - 1);
 			repo.save(b);
-		}
+			}
 		
 		repoc.save(c);
 		
-		return viewAllPatrons(model);    
-	}
+		return viewAllPatrons(model);
+		}
 }
