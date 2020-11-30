@@ -194,4 +194,29 @@ public class WebController {
 		
 		return viewAllPatrons(model);
 		}
+	
+	@GetMapping("/viewCheckouts") // viewing all patrons checking out book
+	public String viewCheckouts(Model model) {
+
+		if (repoc.findAll().isEmpty()) {
+			viewAllPatrons(model);
+		}
+		model.addAttribute("checkouts", repoc.findAll());
+		return "checkoutResults";
+	}
+
+	@GetMapping("/checkinBook/{id}") // checking in book
+	public String checkinBook(@PathVariable("id") long id, Model model) {
+		
+		Checkout c = repoc.findById(id).orElse(null);
+		
+		if (c != null) {
+			Book b = c.getBook();
+			b.setAvailableCopies(b.getAvailableCopies() + 1);
+			repo.save(b);
+			repoc.delete(c);
+		}
+		
+		return viewCheckouts(model);
+	}
 }
