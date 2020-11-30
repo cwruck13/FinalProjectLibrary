@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+<head>
+<meta charset="ISO-8859-1">
+<title>Checkout Books</title>
+</head>
+<body>
+<form name="myForm" th:object="${patron}"> 
+Select book to checkout:
+<table> 
+<tr th:each="currentBook : ${availableBooks}" > 
+<td th:text="${currentBook.title}" />     
+<td th:text="${currentBook.author}" />          
+<td><a th:href= "@{/addCheckout/{id}(id=${currentBook.id})}">Checkout</a></td> 
+</tr> 
+</table> 
+</form> 
+</body>
+</html>
