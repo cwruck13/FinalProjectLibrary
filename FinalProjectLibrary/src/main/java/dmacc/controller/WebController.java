@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import dmacc.beans.Book;
+import dmacc.beans.Checkout;
 import dmacc.beans.Patron;
 import dmacc.repository.BookRepository;
+import dmacc.repository.CheckoutRepository;
 import dmacc.repository.PatronRepository;
 
 
@@ -20,6 +22,9 @@ public class WebController {
 	BookRepository repo;
 	@Autowired
 	PatronRepository repop;
+	
+	@Autowired
+	CheckoutRepository repoc;
 	
 	@GetMapping("/viewAll")
 		public String viewAllBooks(Model model) {
@@ -55,11 +60,16 @@ public class WebController {
 	repo.save(c);
 	return viewAllBooks(model);
 	}
-	@GetMapping("/delete/{id}")
-		public String deleteUser(@PathVariable("id") long id, Model model) {
-			Book c = repo.findById(id).orElse(null);
-			repo.delete(c);
-			return viewAllBooks(model);
+
+	@GetMapping("/delete/{id}") // deleting book
+	public String deleteUser(@PathVariable("id") long id, Model model) {
+		if (!repoc.findAll().isEmpty()) {
+			Checkout c = repoc.findById(id).orElse(null);
+			repoc.delete(c);
+		}
+		Book b = repo.findById(id).orElse(null);
+		repo.delete(b);
+		return viewAllBooks(model);
 	}
 	
 	@GetMapping("/viewAllPatrons")

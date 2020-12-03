@@ -20,7 +20,6 @@ public class Checkout {
 	private long id;
 	private LocalDate checkoutDate;
 	private LocalDate dueDate;
-	private LocalDate checkinDate;
 
 	@ManyToOne
 	private Book book;
