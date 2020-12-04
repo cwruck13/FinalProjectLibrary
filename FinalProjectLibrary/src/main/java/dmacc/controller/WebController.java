@@ -199,12 +199,12 @@ public class WebController {
 	public String viewCheckouts(Model model) {
 
 		if (repoc.findAll().isEmpty()) {
-			viewAllPatrons(model);
+			return viewAllPatrons(model);
 		}
 		model.addAttribute("checkouts", repoc.findAll());
 		return "checkoutResults";
 	}
-
+	
 	@GetMapping("/checkinBook/{id}") // checking in book
 	public String checkinBook(@PathVariable("id") long id, Model model) {
 		
