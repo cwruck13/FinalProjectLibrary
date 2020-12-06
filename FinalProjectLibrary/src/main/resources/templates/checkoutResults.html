@@ -14,7 +14,9 @@
 <td th:text="${currentCheckout.book.author}" />
 <td>      Checked Out By: <td>     
 <td th:text="${currentCheckout.patron.name}" />
-<td>   <td>
+<td> Due Date:   <td>
+<td th:text="${currentCheckout.dueDate}" />
+<td>             <td>
 <td><a th:href= "@{/checkinBook/{id}(id=${currentCheckout.id})}" >Checkin</a></td>  
 </tr> 
 </table> 

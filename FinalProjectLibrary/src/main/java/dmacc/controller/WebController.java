@@ -39,8 +39,6 @@ public class WebController {
 	// checkout object.
 	static Patron staticP = new Patron();
 	
-	@Autowired
-	CheckoutRepository repoc;
 	
 	@GetMapping("/viewAll") // viewing list of all books
 	public String viewAllBooks(Model model) {
