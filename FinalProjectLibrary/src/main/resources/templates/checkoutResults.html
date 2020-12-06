@@ -25,7 +25,9 @@ padding: 5px;
 <td th:text="${currentCheckout.book.title}" />
 <td th:text="${currentCheckout.book.author}" /> 
 <td th:text="${currentCheckout.patron.name}" />
-<td>   <td>
+<td> Due Date:   <td>
+<td th:text="${currentCheckout.dueDate}" />
+<td>             <td>
 <td><a th:href= "@{/checkinBook/{id}(id=${currentCheckout.id})}" >Checkin</a></td>  
 </tr> 
 </table> 
@@ -35,5 +37,7 @@ padding: 5px;
 <a href="inputPatron">Add a new patron</a><br />
 <a href= "viewAllPatrons" >View all Patrons</a><br />
 <a href= "viewAllPatrons" >Check out a book</a>
+<a href= "../viewAllPatrons" >View All Patrons</a> 
 </body>
 </html>
+

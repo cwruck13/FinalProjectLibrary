@@ -39,6 +39,7 @@ public class WebController {
 	// checkout object.
 	static Patron staticP = new Patron();
 	
+	
 	@GetMapping("/viewAll") // viewing list of all books
 	public String viewAllBooks(Model model) {
 		if (repo.findAll().isEmpty()) {
