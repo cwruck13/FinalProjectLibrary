@@ -3,16 +3,27 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Checked Out Books</title>
+<style>
+table{
+border-collapse:separate;
+border-spacing: 0 15px;
+}
+td {
+padding: 5px;
+}
+</style>
 </head>
 <body> 
 <form> 
 <table> 
+<tr>
+    <th scope="col">Book</th>
+    <th scope="col">Author</th>
+    <th scope="col">Checked out by</th>
+</tr>
 <tr th:each="currentCheckout : ${checkouts}" >
-<td>Title: <td>
 <td th:text="${currentCheckout.book.title}" />
-<td>  Author: <td>
-<td th:text="${currentCheckout.book.author}" />
-<td>      Checked Out By: <td>     
+<td th:text="${currentCheckout.book.author}" /> 
 <td th:text="${currentCheckout.patron.name}" />
 <td>   <td>
 <td><a th:href= "@{/checkinBook/{id}(id=${currentCheckout.id})}" >Checkin</a></td>  
