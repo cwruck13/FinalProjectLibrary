@@ -3,10 +3,25 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>View All Books</title>
+<style>
+table{
+border-collapse:separate;
+border-spacing: 0 15px;
+}
+td {
+padding: 4px;
+}
+</style>
 </head>
 <body> 
 <form> 
 <table> 
+<tr>
+    <th scope="col">Book</th>
+    <th scope="col">Author</th>
+    <th scope="col">Total Copies</th>
+    <th scope="col">Available Copies</th>
+</tr>
 <tr th:each="currentBook : ${books}" > 
 <td th:text="${currentBook.title}" />     
 <td th:text="${currentBook.author}" />     

@@ -7,6 +7,9 @@
 <body> 
 <form> 
 <table> 
+<tr>
+    <th scope="col">Patron</th>
+</tr>
 <tr th:each="currentPatron : ${patrons}" > 
 <td th:text="${currentPatron.name}" />       
 <td><a th:href= "@{/editPatron/{id}(id=${currentPatron.id})}" >Edit</a></td> 
@@ -18,7 +21,6 @@
 <a href="inputBook">Add a new book</a><br />
 <a href="viewAll">View all books</a><br />
 <a href="inputPatron">Add a new patron</a><br />
-<a href= "viewAllPatrons" >Check out a book</a><br />
 <a href="viewCheckouts">View Checked Out Books</a>
 </body>
 </html>
