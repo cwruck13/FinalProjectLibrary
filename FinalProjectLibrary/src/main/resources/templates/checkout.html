@@ -6,7 +6,6 @@
 </head>
 <body>
 <form> 
-<form name="myForm" th:object="${patron}"> 
 Select book to checkout:
 <table> 
 <tr th:each="currentBook : ${availableBooks}" > 
@@ -15,12 +14,11 @@ Select book to checkout:
 <td><a th:href= "@{/addCheckout/{id}(id=${currentBook.id})}">Checkout</a></td> 
 </tr> 
 </table>
-<a href= "viewAll" >View all Books</a><br />
-<a href="inputBook">Add a new book</a><br />
-<a href="inputPatron">Add a new patron</a><br />
-<a href= "viewAllPatrons" >View all Patrons</a><br />
-<a href= "viewAllPatrons" >Check out a book</a><br />
-</table> 
+<a href= "../viewAll" >View all Books</a><br />
+<a href="../inputBook">Add a new book</a><br />
+<a href="../inputPatron">Add a new patron</a><br />
+<a href= "../viewAllPatrons" >View all Patrons</a><br />
+<a href="../viewCheckouts">View Checked Out Books</a>
 </form> 
 </body>
 </html> 
