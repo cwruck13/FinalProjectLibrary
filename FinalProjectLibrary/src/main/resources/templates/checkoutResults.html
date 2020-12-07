@@ -20,14 +20,17 @@ padding: 5px;
     <th scope="col">Book</th>
     <th scope="col">Author</th>
     <th scope="col">Checked out by</th>
+    <th scope="col">Check out Date</th>
+    <th scope="col">Check in Date</th>
+    
 </tr>
 <tr th:each="currentCheckout : ${checkouts}" >
 <td th:text="${currentCheckout.book.title}" />
 <td th:text="${currentCheckout.book.author}" /> 
 <td th:text="${currentCheckout.patron.name}" />
-<td> Due Date:   <td>
+<td th:text="${currentCheckout.checkoutDate}" />
 <td th:text="${currentCheckout.dueDate}" />
-<td>             <td>
+<td>             <tdd
 <td><a th:href= "@{/checkinBook/{id}(id=${currentCheckout.id})}" >Checkin</a></td>  
 </tr> 
 </table> 
