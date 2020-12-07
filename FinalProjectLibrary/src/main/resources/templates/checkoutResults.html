@@ -30,7 +30,6 @@ padding: 5px;
 <td th:text="${currentCheckout.patron.name}" />
 <td th:text="${currentCheckout.checkoutDate}" />
 <td th:text="${currentCheckout.dueDate}" />
-<td>             <tdd
 <td><a th:href= "@{/checkinBook/{id}(id=${currentCheckout.id})}" >Checkin</a></td>  
 </tr> 
 </table> 
