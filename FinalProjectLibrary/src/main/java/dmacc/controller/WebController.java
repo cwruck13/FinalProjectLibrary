@@ -192,19 +192,19 @@ public class WebController {
 		
 		repoc.save(c);
 		
-		return viewAllPatrons(model);
+		return viewCheckouts(model);
 		}
 	
 	@GetMapping("/viewCheckouts") // viewing all patrons checking out book
 	public String viewCheckouts(Model model) {
 
 		if (repoc.findAll().isEmpty()) {
-			return viewAllPatrons(model);
+			viewAllPatrons(model);
 		}
 		model.addAttribute("checkouts", repoc.findAll());
 		return "checkoutResults";
 	}
-	
+
 	@GetMapping("/checkinBook/{id}") // checking in book
 	public String checkinBook(@PathVariable("id") long id, Model model) {
 		
